@@ -1,9 +1,6 @@
 import pandas as pd
 import numpy as np
 
-import warnings
-warnings.filterwarnings('ignore')
-
 #import CSV into python environment 
 file_path = '/Users/vincent/Desktop/As.2/apple_quality.csv'
 
@@ -126,8 +123,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import pandas as pd
 
-# Assuming 'Quality_Num' is the target and is a separate column in your DataFrame
-# and all other columns are features
 X = df_cleaned.drop('Quality_Num', axis=1)
 y = df_cleaned['Quality_Num']
 
@@ -140,7 +135,6 @@ rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
 # Train the model
 rf_classifier.fit(X_train, y_train)
 
-# Predict on the test set
 y_pred = rf_classifier.predict(X_test)
 
 # Calculate accuracy
@@ -150,38 +144,29 @@ print(f'Accuracy of the Random Forest Classifier: {accuracy:.2f}')
 # Extract feature importances
 feature_importances = rf_classifier.feature_importances_
 
-# Create a pandas series to make it easier to visualize the importances
 features_series = pd.Series(feature_importances, index=X.columns).sort_values(ascending=False)
 
-# Display the feature importances
 print("Feature Importances:")
 print(features_series)
 
-#only using measures which you can determin without cutting into the apple
+#repeating the process only using measures which you can determin without cutting into the apple
 # Selecting predictors
 X = df_cleaned[['Size', 'Weight', 'Ripeness']]
 y = df_cleaned['Quality_Num']
 
-# Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Initialize the Random Forest Classifier
 rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
 
-# Train the model with your selected features
 rf_classifier.fit(X_train, y_train)
 
-# Predict on the test set
 y_pred = rf_classifier.predict(X_test)
 
-# Calculate and print the accuracy
 accuracy = accuracy_score(y_test, y_pred)
 print(f'Accuracy of the Random Forest Classifier: {accuracy:.2f}')
 
-# Get feature importances
 importances = rf_classifier.feature_importances_
 
-# Summarize feature importances
 for feature, importance in zip(['Size', 'Weight', 'Ripeness'], importances):
     print(f'Feature: {feature}, Importance: {importance:.4f}')
 
